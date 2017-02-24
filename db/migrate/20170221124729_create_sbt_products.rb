@@ -3,7 +3,7 @@ class CreateSbtProducts < ActiveRecord::Migration
     create_table :sbt_products do |t|
       t.string          :article
       t.string          :name
-      t.decimal(10.2)   :price
+      t.decimal         :price, precision: 10, scale: 2
       t.integer         :sbt_unit_id
       t.integer         :tax_rate
 

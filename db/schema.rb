@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170217171035) do
+ActiveRecord::Schema.define(version: 20170224123144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,86 @@ ActiveRecord::Schema.define(version: 20170217171035) do
     t.string   "agreement"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+  end
+
+  create_table "sbt_invoices", force: :cascade do |t|
+    t.string   "invoice_number"
+    t.integer  "sbt_customer_id"
+    t.datetime "date_issue"
+    t.integer  "sbt_waybill_id"
+    t.decimal  "total_sum",       precision: 10, scale: 2
+    t.decimal  "total_tax10_sum", precision: 10, scale: 2
+    t.decimal  "total_tax20_sum", precision: 10, scale: 2
+    t.datetime "due_date"
+    t.boolean  "paid"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+  end
+
+  create_table "sbt_order_items", force: :cascade do |t|
+    t.integer  "sbt_order_id"
+    t.integer  "sbt_product_id"
+    t.decimal  "amount",         precision: 10, scale: 3
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
+
+  create_table "sbt_orders", force: :cascade do |t|
+    t.integer  "number"
+    t.datetime "date_order"
+    t.integer  "sbt_order_items_count"
+    t.integer  "sbt_customer_id"
+    t.string   "tel_contact"
+    t.datetime "date_due"
+    t.integer  "status"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "sbt_products", force: :cascade do |t|
+    t.string   "article"
+    t.string   "name"
+    t.decimal  "price",       precision: 10, scale: 2
+    t.integer  "sbt_unit_id"
+    t.integer  "tax_rate"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  create_table "sbt_units", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sbt_waybill_items", force: :cascade do |t|
+    t.integer  "num_line"
+    t.integer  "sbt_waybill_id"
+    t.decimal  "amount",         precision: 10, scale: 3
+    t.decimal  "amount_order",   precision: 10, scale: 3
+    t.decimal  "amount_delta",   precision: 10, scale: 3
+    t.integer  "sbt_product_id"
+    t.decimal  "price",          precision: 10, scale: 2
+    t.decimal  "tax_rate",       precision: 10, scale: 2
+    t.decimal  "total_sum",      precision: 10, scale: 2
+    t.decimal  "total_tax_sum",  precision: 10, scale: 2
+    t.decimal  "grandtotal_sum", precision: 10, scale: 2
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
+
+  create_table "sbt_waybills", force: :cascade do |t|
+    t.string   "num_ttn"
+    t.integer  "sbt_customer_id"
+    t.integer  "sbt_order_id"
+    t.datetime "date_issue"
+    t.integer  "sbt_waybill_items_count"
+    t.decimal  "total_sum",               precision: 10, scale: 2
+    t.decimal  "total_tax10_sum",         precision: 10, scale: 2
+    t.decimal  "total_tax20_sum",         precision: 10, scale: 2
+    t.string   "auto_num"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
   end
 
 end

@@ -3,7 +3,7 @@ class CreateSbtOrderItems < ActiveRecord::Migration
     create_table :sbt_order_items do |t|
       t.integer       :sbt_order_id
       t.integer       :sbt_product_id
-      t.decimal(10.3) :amount
+      t.decimal       :amount, precision: 10, scale: 3
 
       t.timestamps null: false
     end
