@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224123144) do
+ActiveRecord::Schema.define(version: 20170224173554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,10 +34,13 @@ ActiveRecord::Schema.define(version: 20170224123144) do
     t.decimal  "total_tax10_sum", precision: 10, scale: 2
     t.decimal  "total_tax20_sum", precision: 10, scale: 2
     t.datetime "due_date"
-    t.boolean  "paid"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.boolean  "paid",                                     default: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
   end
+
+  add_index "sbt_invoices", ["sbt_customer_id"], name: "index_sbt_invoices_on_sbt_customer_id", using: :btree
+  add_index "sbt_invoices", ["sbt_waybill_id"], name: "index_sbt_invoices_on_sbt_waybill_id", using: :btree
 
   create_table "sbt_order_items", force: :cascade do |t|
     t.integer  "sbt_order_id"
@@ -47,6 +50,9 @@ ActiveRecord::Schema.define(version: 20170224123144) do
     t.datetime "updated_at",                              null: false
   end
 
+  add_index "sbt_order_items", ["sbt_order_id"], name: "index_sbt_order_items_on_sbt_order_id", using: :btree
+  add_index "sbt_order_items", ["sbt_product_id"], name: "index_sbt_order_items_on_sbt_product_id", using: :btree
+
   create_table "sbt_orders", force: :cascade do |t|
     t.integer  "number"
     t.datetime "date_order"
@@ -54,10 +60,12 @@ ActiveRecord::Schema.define(version: 20170224123144) do
     t.integer  "sbt_customer_id"
     t.string   "tel_contact"
     t.datetime "date_due"
-    t.integer  "status"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.integer  "status",                default: 0
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
+
+  add_index "sbt_orders", ["sbt_customer_id"], name: "index_sbt_orders_on_sbt_customer_id", using: :btree
 
   create_table "sbt_products", force: :cascade do |t|
     t.string   "article"
@@ -68,6 +76,8 @@ ActiveRecord::Schema.define(version: 20170224123144) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
   end
+
+  add_index "sbt_products", ["sbt_unit_id"], name: "index_sbt_products_on_sbt_unit_id", using: :btree
 
   create_table "sbt_units", force: :cascade do |t|
     t.string   "name"
@@ -83,13 +93,16 @@ ActiveRecord::Schema.define(version: 20170224123144) do
     t.decimal  "amount_delta",   precision: 10, scale: 3
     t.integer  "sbt_product_id"
     t.decimal  "price",          precision: 10, scale: 2
-    t.decimal  "tax_rate",       precision: 10, scale: 2
+    t.integer  "tax_rate",                                default: 0
     t.decimal  "total_sum",      precision: 10, scale: 2
     t.decimal  "total_tax_sum",  precision: 10, scale: 2
     t.decimal  "grandtotal_sum", precision: 10, scale: 2
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
   end
+
+  add_index "sbt_waybill_items", ["sbt_product_id"], name: "index_sbt_waybill_items_on_sbt_product_id", using: :btree
+  add_index "sbt_waybill_items", ["sbt_waybill_id"], name: "index_sbt_waybill_items_on_sbt_waybill_id", using: :btree
 
   create_table "sbt_waybills", force: :cascade do |t|
     t.string   "num_ttn"
@@ -104,5 +117,8 @@ ActiveRecord::Schema.define(version: 20170224123144) do
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
   end
+
+  add_index "sbt_waybills", ["sbt_customer_id"], name: "index_sbt_waybills_on_sbt_customer_id", using: :btree
+  add_index "sbt_waybills", ["sbt_order_id"], name: "index_sbt_waybills_on_sbt_order_id", using: :btree
 
 end
