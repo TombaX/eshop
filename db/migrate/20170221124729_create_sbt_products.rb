@@ -7,7 +7,9 @@ class CreateSbtProducts < ActiveRecord::Migration
       t.integer         :sbt_unit_id
       t.integer         :tax_rate
 
+
       t.timestamps null: false
     end
+    change_column :sbt_products, :tax_rate, :integer, :default => 0.0
   end
 end

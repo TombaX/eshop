@@ -72,9 +72,9 @@ ActiveRecord::Schema.define(version: 20170224173554) do
     t.string   "name"
     t.decimal  "price",       precision: 10, scale: 2
     t.integer  "sbt_unit_id"
-    t.integer  "tax_rate"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.integer  "tax_rate",                             default: 0
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
   end
 
   add_index "sbt_products", ["sbt_unit_id"], name: "index_sbt_products_on_sbt_unit_id", using: :btree
